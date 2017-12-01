@@ -1,0 +1,81 @@
+﻿@model WebTask.Models.EmployeeViewModel
+@{
+    Layout = Layout;
+
+}
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<div class="container" style="width:90%;margin-top:2%">
+
+    @using (Html.BeginForm("Index", "Employee", FormMethod.Get))
+    {
+        <b> Search Option: </b>
+        @Html.RadioButton("option", "First name") <text>First name</text> @Html.RadioButton("option", "Last name") <text>Last name</text>
+        @Html.RadioButton("option", "Manager")<text>Manager</text> @Html.TextBox("search")
+        <input type="submit"
+               name="submit"
+               value="Search" />
+    }
+
+    @using (Html.BeginForm("Clean", "Employee", FormMethod.Get))
+    {
+        <input type="submit"
+               name="clean"
+               value="cleanSearch" />
+    }
+    <p></p>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+
+    @if (ViewBag.EmployeeList != null)
+    {
+        if (ViewBag.TotalEmployees == 0)
+        {
+            <p>No records found !</p>
+        }
+        else
+        {
+     <table class="table table-striped">
+            <tr>
+                <th>ID</th>
+                <th>@Html.ActionLink("First name", "Index", new { sortBy = ViewBag.FirstNameSort })</th>
+                <th>@Html.ActionLink("Last name", "Index", new { sortBy = ViewBag.LastNameSort })</th>
+                <th>Birth date</th>
+                <th>@Html.ActionLink("Manager", "Index", new { sortBy = ViewBag.ManagerSort })</th>
+                <th>@Html.ActionLink("Department", "Index", new { sortBy = ViewBag.DepartmentSort })</th>
+                <th>Country</th>
+                <th>Options</th>
+
+            </tr>
+            <tbody id="employeeRow">
+                @foreach (var item in ViewBag.EmployeeList)
+                {
+
+                    <tr>
+                        <td>@item.EmployeeId</td>
+                        <td>@item.FirstName</td>
+                        <td>@item.LastName</td>
+                      
+                        <td>@item.BirthDate.ToString(@"MM/dd/yyyy")</td>
+                        <td>@item.Manager</td>
+                        <td>@item.DepartmentName</td>
+                        <td>@item.Country</td>
+                        
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.EmployeeId }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.EmployeeId }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.EmployeeId })
+                        </td>
+                    </tr>
+                }
+                <tr></tr>
+            </tbody>
+        </table>
+
+            }
+        }
+
+</div>
+
